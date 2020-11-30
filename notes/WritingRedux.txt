@@ -1,0 +1,18 @@
+:: Other ways of writing Redux
+Martin Liberg, M car sharing
+
+@M they don't use createSlice function. instead they write reducers and actions themselves as plain functions.
+
+:: See: redux-toolkit.js and redux-vanilla.js
+example 1 is showing what's different between @reduxjs/toolkit and vanilla redux.
+
+Actions are just plain javascript objects
++
+Reducers are just plain javascript functions which take these actions to update State.
+
+:: Vanilla Redux
+see redux.js
+
+It's good to be aware of and know how to write actions and reducers in vanilla Redux even though we have @reduxjs/toolkit which makes the code less verbose.
+
+Idea: rewrite an old project using vanilla Redux. this excercise will likely help increase understanding of what's happening under the hood.
