@@ -1,0 +1,42 @@
+:: Recap
+Asynchronous actions take time to complete so we use promises. (t.ex: fetch, then, then, etc)
+ie. we've been doing this every time we use APIs
+
+When using Redux you might want to put the resulting data into the Store using 'dispatch', however, Redux by default is not asynchronous!
+
+Everthing we do in Redux is synchronous, so when we dispatch something the next line of code won't execute until that dispatch is complete so a promise won't work here.
+
+In order to get APIs and Redux to work together,  we need to use a few different techniques to get Redux to work in an asynchronous way. 
+The simplest way to do this is to fire dispatch functions around our promises to tell Redux on what's going on at this given time.
+
+:: Whiteboard
+
+SOLUTION 1
+useEffect..... 
+  fetch ("...")
+    .then(res => res.json())
+    .then(json => {
+       
+
+    })
+
+In this ex. we may want to update the UI to say that the page is loading while it fetches the data from API and so on, while we're waiting for the response and while we process the incoming data. so we could do:
+
+useEffect..... 
+  dispatch(ui.actions.setLoading(true)) //so here we might dispatch something that shows a spinner or loading state.
+  fetch ("...")
+    .then(res => res.json())
+    .then(json => {
+        dispatch(todos.actions.set(json)) //now we tell the store that we have data
+        dispatch(ui.actions.setLoading(false)) // hides the loader
+    })
+
+Now we have async code.
+Each of the dispatch lines will fire immediately as soon as we send them, making use of our promise.
+
+This approach works, however, if we have an app where multiple components need to fetch and load information from the ToDos, then we'll have to have this kind of code and reimplement this logic everywhere. If we wanted to use this approch, it might be better to make this into a packaged thing we can invoke more simply. We could do this by pulling all of the above into a function called "FetchTodos" and that action can then deal with all of this code to fetch, make the promises, and fire the dispatches while that is happening is in the background.
+
+This is called a "Thunk"
+
+:: Thunks or "Redux Thunk"
+A thunk is a function which is asynchronous. This function also has access to Redux's dispatch. This enables us to tie together all the actions from the example above into one package to dispatch as a normal action keeping Redux synchronous.
