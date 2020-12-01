@@ -1,31 +1,19 @@
-import React from 'react'
-import styled from 'styled-components/macro'
-import { Card } from './lib/Card'
+import React from 'react';
+import { Provider } from 'react-redux';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-const ThinnerCard = styled(Card)`
-  width: 400px;
-`
+import QuoteContainer from './components/QuoteContainer';
+import QuoteControls from './components/QuoteControls';
+import { quotes } from './reducers/quotes';
 
-const App = () => {
+const reducer = combineReducers({ quotes: quotes.reducer });
+const store = configureStore({ reducer });
+
+export const App = () => {
   return (
-   <div>
-     <ThinnerCard 
-      coverImage="https://www.fillmurray.com/500/300"
-      thumbnailURL="https://www.fillmurray.com/100/100"
-      title="I am the title" 
-      secondaryText="I'm a fancy paragraph"
-     />
-
-     <ThinnerCard title="I have no other props sad-face" secondaryText="HEY! Whut am I? Chopped liver?">
-       Don't forget the children!
-     </ThinnerCard>
-
-     <Card title="Hay is for horses"/>
-
-     <Card>
-       Hello! I'm a child.
-     </Card>
-   </div>
-  )
+    <Provider store={store}>
+      <QuoteControls />
+      <QuoteContainer />
+    </Provider>
+  );
 }
-export default App
